@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Faizan Papa Ka Store</title>
+  <!-- jQuery (CDN) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f172a;           /* slate-900 */
+      --bg-soft:#111827;      /* gray-900 */
+      --card:#0b1222;         /* deep panel */
+      --muted:#94a3b8;        /* slate-400 */
+      --text:#e5e7eb;         /* gray-200 */
+      --brand:#22d3ee;        /* cyan-400 */
+      --brand-2:#a78bfa;      /* violet-400 */
+      --accent:#10b981;       /* emerald-500 */
+      --danger:#ef4444;       /* red-500 */
+      --ring: 0 0 0 3px rgba(34,211,238,.2);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b1020, #0f172a 60%); color:var(--text)}
+
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(10px);
+      background:linear-gradient(90deg,rgba(15,23,42,.85),rgba(15,23,42,.6));
+      border-bottom:1px solid rgba(148,163,184,.12);
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:14px 18px}
+    .nav{
+      display:flex;align-items:center;gap:12px;justify-content:space-between
+    }
+    .logo{
+      display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px
+    }
+    .logo .badge{
+      width:36px;height:36px;border-radius:12px;
+      background: conic-gradient(from 180deg at 50% 50%, var(--brand), var(--brand-2), var(--accent), var(--brand));
+      display:grid;place-items:center;font-size:14px;color:#0b1020;font-weight:800;
+      box-shadow:0 10px 30px rgba(167,139,250,.25), inset 0 0 20px rgba(34,211,238,.25);
+    }
+
+    .controls{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end
+    }
+    .input, select{
+      background:#0b1222;border:1px solid rgba(148,163,184,.2);color:var(--text);
+      padding:10px 12px;border-radius:12px;outline:none;min-width:180px;
+    }
+    .input:focus, select:focus{box-shadow:var(--ring);border-color:var(--brand)}
+    .btn{
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:#0b1020;border:none;border-radius:14px;padding:10px 14px;font-weight:700;cursor:pointer;
+      box-shadow:0 8px 24px rgba(34,211,238,.25);
+      transition:transform .08s ease, filter .2s ease;
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform:translateY(1px)}
+    .btn-outline{
+      background:transparent;color:var(--text);border:1px solid rgba(148,163,184,.3)
+    }
+    .icon-btn{display:flex;align-items:center;gap:8px}
+
+    /* Hero */
+    .hero{
+      max-width:1200px;margin:22px auto;padding:0 18px;
+      display:grid;grid-template-columns:1.2fr .8fr;gap:18px;
+    }
+    @media (max-width:900px){ .hero{grid-template-columns:1fr} }
+    .card{
+      background:linear-gradient(180deg, rgba(10,16,32,.9), rgba(9,13,27,.9));
+      border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .hero .glass{
+      background:
+        radial-gradient(1200px 300px at -10% -50%, rgba(34,211,238,.15), transparent 40%),
+        radial-gradient(900px 300px at 120% -40%, rgba(167,139,250,.18), transparent 40%),
+        linear-gradient(180deg, rgba(13,22,42,.9), rgba(11,18,34,.9));
+    }
+    .hero h1{margin:4px 0 10px;font-size:clamp(24px,4vw,38px);line-height:1.1}
+    .hero p{margin:0;color:var(--muted)}
+    .hero .cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+
+    /* Grid */
+    .grid{
+      max-width:1200px;margin:8px auto 60px;padding:0 18px;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:16px
+    }
+    @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}}
+
+    .product{
+      background:#0b1222;border:1px solid rgba(148,163,184,.12);border-radius:16px;overflow:hidden;
+      transition:transform .15s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .product:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.35);box-shadow:0 18px 40px rgba(167,139,250,.12)}
+    .thumb{
+      height:170px;background:linear-gradient(120deg,#0f172a,#0b1222);display:grid;place-items:center;overflow:hidden
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .pd-body{padding:12px}
+    .pd-title{font-weight:700}
+    .pd-cat{font-size:12px;color:var(--muted)}
+    .pd-foot{margin-top:12px;display:flex;justify-content:space-between;align-items:center}
+    .price{font-weight:800;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    /* Cart Panel */
+    .cart{
+      position:fixed;right:16px;bottom:16px;z-index:60
+    }
+    .fab{
+      width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:22px
+    }
+    .cart-panel{
+      position:fixed;right:16px;bottom:86px;width:min(420px,92vw);max-height:70vh;overflow:auto;
+      background:#0b1222;border:1px solid rgba(148,163,184,.15);border-radius:18px;padding:14px;display:none
+    }
+    .cart-row{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:8px;border-bottom:1px dashed rgba(148,163,184,.15)}
+    .cart-row img{width:48px;height:48px;object-fit:cover;border-radius:10px}
+    .qty{display:flex;align-items:center;gap:6px}
+    .qty button{width:28px;height:28px;border-radius:8px;border:1px solid rgba(148,163,184,.3);background:transparent;color:var(--text);cursor:pointer}
+    .empty{color:var(--muted);text-align:center;padding:16px}
+
+    /* Add Product form */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:700px){.form-row{grid-template-columns:1fr}}
+    label{font-size:12px;color:var(--muted)}
+    .uploader{border:2px dashed rgba(148,163,184,.3);border-radius:14px;padding:12px;text-align:center}
+    .uploader img{max-width:100%;max-height:180px;display:none;margin-top:8px;border-radius:12px}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(148,163,184,.12);padding:22px 18px;color:var(--muted);text-align:center}
+    .link{color:var(--brand);text-decoration:none}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="wrap nav">
+      <div class="logo">
+        <div class="badge">FP</div>
+        <div>
+          <div style="font-size:16px">Faizan Papa Ka Store</div>
+          <div style="font-size:12px;color:var(--muted)">Simple • Fast • Stylish</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input id="search" class="input" type="search" placeholder="Search product..." />
+        <select id="category">
+          <option value="all">All Categories</option>
+        </select>
+        <select id="sort">
+          <option value="popular">Sort: Popular</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A → Z</option>
+          <option value="name-desc">Name: Z → A</option>
+        </select>
+        <button id="toggle-theme" class="btn btn-outline icon-btn" title="Theme">
+          <span>🌓</span><span>Theme</span>
+        </button>
+        <button id="open-add" class="btn icon-btn">
+          <span>➕</span><span>Add Product</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="card glass">
+      <h1>Best Deals, Zero Stress ✨</h1>
+      <p>Search, filter, add to cart—sab kuch ek jagah. Apne custom products bhi add karo (image upload ke saath) aur cart automatically <b>save</b> hota hai.</p>
+      <div class="cta">
+        <button id="scroll-shop" class="btn icon-btn"><span>🛍️</span><span>Start Shopping</span></button>
+        <button id="clear-data" class="btn btn-outline icon-btn"><span>🧹</span><span>Reset Data</span></button>
+      </div>
+    </div>
+
+    <!-- Add Product -->
+    <div class="card">
+      <h3 style="margin:0 0 10px">Add Your Product</h3>
+      <div class="form-row">
+        <div>
+          <label>Product Name</label>
+          <input id="ap-name" class="input" placeholder="e.g. Wireless Earbuds" />
+        </div>
+        <div>
+          <label>Price (₹)</label>
+          <input id="ap-price" type="number" min="1" class="input" placeholder="e.g. 999" />
+        </div>
+        <div>
+          <label>Category</label>
+          <input id="ap-cat" class="input" placeholder="e.g. Electronics" />
+        </div>
+        <div>
+          <label>Popularity (0—999)</label>
+          <input id="ap-pop" type="number" min="0" max="999" class="input" placeholder="e.g. 87" />
+        </div>
+        <div class="uploader">
+          <label for="ap-img">Upload Image</label><br>
+          <input id="ap-img" type="file" accept="image/*" class="input" style="width:100%;margin-top:8px">
+          <img id="ap-preview" alt="Preview">
+        </div>
+        <div style="display:grid;align-items:end">
+          <button id="ap-add" class="btn">Add to Store</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section id="shop" class="grid"></section>
+
+  <!-- Cart Floating -->
+  <div class="cart">
+    <button id="cart-btn" class="btn fab icon-btn"><span>🛒</span></button>
+    <div id="cart-panel" class="cart-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong style="font-size:18px">Your Cart</strong>
+        <button id="close-cart" class="btn btn-outline">Close</button>
+      </div>
+      <div id="cart-items"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+        <div>
+          <div>Items: <b id="cart-count">0</b></div>
+          <div>Total: <b id="cart-total">₹0</b></div>
+        </div>
+        <button id="checkout" class="btn icon-btn"><span>✅</span><span>Checkout</span></button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Faizan Papa Ka Store • Built with ♥ using HTML, CSS, JS & jQuery.
+    <br><a class="link" href="#">Back to top</a>
+  </footer>
+
+  <script>
+    // ---------- Data ----------
+    const demoProducts = [
+      {id:"p1", name:"Wireless Earbuds", price:1499, cat:"Electronics", img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1200&auto=format&fit=crop", pop:93},
+      {id:"p2", name:"Sports Sneakers", price:2199, cat:"Fashion", img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop", pop:88},
+      {id:"p3", name:"Smart Watch", price:2999, cat:"Electronics", img:"https://images.unsplash.com/photo-1511735111819-9a3f7709049c?q=80&w=1200&auto=format&fit=crop", pop:97},
+      {id:"p4", name:"Backpack Pro", price:1299, cat:"Accessories", img:"https://images.unsplash.com/photo-1536148935331-408321065b18?q=80&w=1200&auto=format&fit=crop", pop:75},
+      {id:"p5", name:"Gaming Mouse", price:999, cat:"Electronics", img:"https://images.unsplash.com/photo-1592840064395-fe57ef605027?q=80&w=1200&auto=format&fit=crop", pop:84},
+      {id:"p6", name:"Graphic T-Shirt", price:699, cat:"Fashion", img:"https://images.unsplash.com/photo-1548883354-7622d3d4a83f?q=80&w=1200&auto=format&fit=crop", pop:72},
+      {id:"p7", name:"Water Bottle Steel", price:499, cat:"Home", img:"https://images.unsplash.com/photo-1590165482129-7a43878e7f37?q=80&w=1200&auto=format&fit=crop", pop:64},
+      {id:"p8", name:"Desk Lamp LED", price:849, cat:"Home", img:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=1200&auto=format&fit=crop", pop:68},
+    ];
+
+    const LS_KEY_PRODUCTS = "fp_products_v1";
+    const LS_KEY_CART = "fp_cart_v1";
+    const LS_KEY_THEME = "fp_theme";
+
+    let products = [];
+    let cart = {};
+
+    // ---------- Utils ----------
+    const rupee = n => "₹" + Number(n||0).toLocaleString("en-IN");
+    const uid = () => "id_" + Math.random().toString(36).slice(2, 9);
+
+    function saveAll(){
+      localStorage.setItem(LS_KEY_PRODUCTS, JSON.stringify(products));
+      localStorage.setItem(LS_KEY_CART, JSON.stringify(cart));
+    }
+
+    function loadAll(){
+      try {
+        const p = JSON.parse(localStorage.getItem(LS_KEY_PRODUCTS));
+        const c = JSON.parse(localStorage.getItem(LS_KEY_CART));
+        products = Array.isArray(p) && p.length ? p : demoProducts;
+        cart = c && typeof c === "object" ? c : {};
+      } catch(e){
+        products = demoProducts.slice();
+        cart = {};
+      }
+    }
+
+    // ---------- Render ----------
+    function renderCategories(){
+      const cats = ["all", ...new Set(products.map(p=>p.cat))];
+      $("#category").empty();
+      for(const c of cats){
+        $("#category").append(`<option value="${c}">${c[0].toUpperCase()+c.slice(1)}</option>`);
+      }
+    }
+
+    function productCard(p){
+      return `
+      <div class="product" data-id="${p.id}" data-name="${p.name.toLowerCase()}" data-cat="${p.cat.toLowerCase()}" data-price="${p.price}" data-pop="${p.pop||0}">
+        <div class="thumb">
+          <img loading="lazy" src="${p.img}" alt="${p.name}">
+        </div>
+        <div class="pd-body">
+          <div class="pd-title">${p.name}</div>
+          <div class="pd-cat">${p.cat}</div>
+          <div class="pd-foot">
+            <div class="price">${rupee(p.price)}</div>
+            <button class="btn btn-outline add-cart icon-btn" data-id="${p.id}"><span>➕</span><span>Add</span></button>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderGrid(){
+      let list = [...products];
+
+      // search
+      const q = $("#search").val()?.toLowerCase() || "";
+      if(q) list = list.filter(p => (p.name + " " + p.cat).toLowerCase().includes(q));
+
+      // filter
+      const cat = $("#category").val();
+      if(cat && cat !== "all") list = list.filter(p => p.cat.toLowerCase() === cat.toLowerCase());
+
+      // sort
+      const s = $("#sort").val();
+      if(s === "price-asc") list.sort((a,b)=>a.price-b.price);
+      else if(s === "price-desc") list.sort((a,b)=>b.price-a.price);
+      else if(s === "name-asc") list.sort((a,b)=>a.name.localeCompare(b.name));
+      else if(s === "name-desc") list.sort((a,b)=>b.name.localeCompare(a.name));
+      else list.sort((a,b)=>(b.pop||0)-(a.pop||0)); // popular
+
+      // mount
+      const $grid = $("#shop");
+      $grid.empty();
+      if(!list.length){
+        $grid.append(`<div class="card" style="grid-column:1/-1;text-align:center">No products found.</div>`);
+        return;
+      }
+      list.forEach(p => $grid.append(productCard(p)));
+    }
+
+    function renderCart(){
+      const $wrap = $("#cart-items");
+      const ids = Object.keys(cart);
+      $wrap.empty();
+      if(!ids.length){
+        $wrap.html(`<div class="empty">Cart is empty.</div>`);
+      } else {
+        ids.forEach(id=>{
+          const p = products.find(x=>x.id===id);
+          if(!p) return;
+          const qty = cart[id];
+          $wrap.append(`
+            <div class="cart-row" data-id="${id}">
+              <img src="${p.img}" alt="${p.name}">
+              <div>
+                <div style="font-weight:600">${p.name}</div>
+                <div class="pd-cat">${p.cat}</div>
+                <div>${rupee(p.price)} × ${qty} = <b>${rupee(p.price*qty)}</b></div>
+              </div>
+              <div class="qty">
+                <button class="dec">−</button>
+                <span>${qty}</span>
+                <button class="inc">+</button>
+                <button class="rm" title="Remove">🗑️</button>
+              </div>
+            </div>
+          `);
+        });
+      }
+      // totals
+      const {count,total} = cartSummary();
+      $("#cart-count").text(count);
+      $("#cart-total").text(rupee(total));
+    }
+
+    function cartSummary(){
+      let count=0,total=0;
+      for(const [id,qty] of Object.entries(cart)){
+        const p = products.find(x=>x.id===id);
+        if(!p) continue;
+        count+=qty;
+        total+=qty*p.price;
+      }
+      return {count,total};
+    }
+
+    // ---------- Actions ----------
+    function addToCart(id){
+      cart[id] = (cart[id]||0) + 1;
+      saveAll(); renderCart();
+    }
+    function decFromCart(id){
+      if(!cart[id]) return;
+      cart[id]--;
+      if(cart[id]<=0) delete cart[id];
+      saveAll(); renderCart();
+    }
+    function removeFromCart(id){
+      delete cart[id];
+      saveAll(); renderCart();
+    }
+
+    function addCustomProduct({name, price, cat, img, pop}){
+      const item = {id:uid(), name:name.trim(), price:Number(price), cat:cat.trim()||"Custom", img, pop:Number(pop)||0};
+      products.push(item);
+      saveAll();
+      renderCategories();
+      renderGrid();
+      // clear form
+      $("#ap-name,#ap-price,#ap-cat,#ap-pop").val("");
+      $("#ap-img").val("");
+      $("#ap-preview").hide().attr("src","");
+    }
+
+    // ---------- Theme ----------
+    function applyTheme(){
+      const t = localStorage.getItem(LS_KEY_THEME) || "dark";
+      if(t==="light"){
+        document.documentElement.style.setProperty("--bg","#f8fafc");
+        document.documentElement.style.setProperty("--bg-soft","#ffffff");
+        document.documentElement.style.setProperty("--card","#ffffff");
+        document.documentElement.style.setProperty("--text","#0f172a");
+        document.documentElement.style.setProperty("--muted","#334155");
+        document.body.style.background="linear-gradient(180deg,#f2f5ff, #eaf0ff)";
+      }else{
+        document.documentElement.style.setProperty("--bg","#0f172a");
+        document.documentElement.style.setProperty("--bg-soft","#111827");
+        document.documentElement.style.setProperty("--card","#0b1222");
+        document.documentElement.style.setProperty("--text","#e5e7eb");
+        document.documentElement.style.setProperty("--muted","#94a3b8");
+        document.body.style.background="linear-gradient(180deg,#0b1020, #0f172a 60%)";
+      }
+    }
+
+    // ---------- Init ----------
+    $(function(){
+      $("#year").text(new Date().getFullYear());
+
+      // load
+      loadAll();
+      renderCategories();
+      renderGrid();
+      renderCart();
+      applyTheme();
+
+      // search, filter, sort
+      $("#search").on("input", renderGrid);
+      $("#category, #sort").on("change", renderGrid);
+
+      // add to cart
+      $(document).on("click",".add-cart", function(){
+        addToCart($(this).data("id"));
+      });
+
+      // cart panel
+      $("#cart-btn").on("click", ()=> $("#cart-panel").fadeToggle(120));
+      $("#close-cart").on("click", ()=> $("#cart-panel").fadeOut(120));
+
+      // qty controls
+      $(document).on("click",".cart-row .inc", function(){
+        const id = $(this).closest(".cart-row").data("id");
+        addToCart(id);
+      });
+      $(document).on("click",".cart-row .dec", function(){
+        const id = $(this).closest(".cart-row").data("id");
+        decFromCart(id);
+      });
+      $(document).on("click",".cart-row .rm", function(){
+        const id = $(this).closest(".cart-row").data("id");
+        removeFromCart(id);
+      });
+
+      // scroll to shop
+      $("#scroll-shop").on("click", ()=> document.getElementById("shop").scrollIntoView({behavior:"smooth"}));
+
+      // theme toggle
+      $("#toggle-theme").on("click", ()=>{
+        const cur = localStorage.getItem(LS_KEY_THEME) || "dark";
+        localStorage.setItem(LS_KEY_THEME, cur==="dark"?"light":"dark");
+        applyTheme();
+      });
+
+      // reset data
+      $("#clear-data").on("click", ()=>{
+        if(confirm("This will reset products & cart to default. Continue?")){
+          localStorage.removeItem(LS_KEY_PRODUCTS);
+          localStorage.removeItem(LS_KEY_CART);
+          loadAll(); renderCategories(); renderGrid(); renderCart();
+        }
+      });
+
+      // add product — image preview
+      $("#ap-img").on("change", function(e){
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev)=> $("#ap-preview").attr("src", ev.target.result).fadeIn(100);
+        reader.readAsDataURL(file);
+      });
+
+      // add product — submit
+      $("#ap-add").on("click", ()=>{
+        const name = $("#ap-name").val();
+        const price = $("#ap-price").val();
+        const cat = $("#ap-cat").val();
+        const pop = $("#ap-pop").val();
+        const imgSrc = $("#ap-preview").attr("src") || "https://picsum.photos/seed/"+Math.random().toString(36).slice(2,7)+"/800/600";
+
+        if(!name || !price){
+          alert("Name & Price are required."); return;
+        }
+        addCustomProduct({name, price, cat, img: imgSrc, pop});
+        alert("Product added!");
+      });
+
+      // keyboard: quick search focus with '/'
+      $(document).on("keydown", (e)=>{
+        if(e.key === "/"){ e.preventDefault(); $("#search").focus(); }
+      });
+    });
+  </script>
+</body>
+</html>
